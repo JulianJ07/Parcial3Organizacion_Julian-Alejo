@@ -1,5 +1,10 @@
 # PLANEACION JUEGO - Pacman Futbolero
 
+# Desarrollado por:
+Julian Jimenez
+Alejandro Cifuentes
+
+---
 ## Proposito de esta entrega
 
 Esta version es una entrega estructural para Nand2Tetris en Jack. El objetivo no es entregar todavia el juego completo, sino demostrar que ya existe una base funcional con:
