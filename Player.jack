@@ -1,0 +1,69 @@
+class Player {
+   field Board board;
+   field int row;
+   field int col;
+
+   constructor Player new(Board gameBoard, int startRow, int startCol) {
+      let board = gameBoard;
+      let row = startRow;
+      let col = startCol;
+      return this;
+   }
+
+   method int getRow() {
+      return row;
+   }
+
+   method int getCol() {
+      return col;
+   }
+
+   method boolean canMove(int deltaRow, int deltaCol) {
+      return board.canEnter(row + deltaRow, col + deltaCol);
+   }
+
+   method boolean move(int deltaRow, int deltaCol) {
+      var int nextRow;
+      var int nextCol;
+
+      let nextRow = row + deltaRow;
+      let nextCol = col + deltaCol;
+
+      if (board.canEnter(nextRow, nextCol)) {
+         do board.drawCell(row, col);
+         let row = nextRow;
+         let col = nextCol;
+         do draw();
+         return true;
+      }
+
+      return false;
+   }
+
+   method void draw() {
+      var int x;
+      var int y;
+
+      let x = board.xOf(col);
+      let y = board.yOf(row);
+
+      do Screen.setColor(false);
+      do Screen.drawRectangle(x + 4, y + 1, x + 5, y + 1);
+      do Screen.drawRectangle(x + 3, y + 2, x + 6, y + 3);
+      do Screen.drawRectangle(x + 2, y + 4, x + 7, y + 6);
+      do Screen.drawRectangle(x + 1, y + 5, x + 8, y + 5);
+      do Screen.drawRectangle(x + 3, y + 7, x + 4, y + 8);
+      do Screen.drawRectangle(x + 6, y + 7, x + 7, y + 8);
+      do Screen.drawRectangle(x + 8, y + 7, x + 9, y + 8);
+      do Screen.setColor(true);
+      do Screen.drawRectangle(x + 4, y + 3, x + 5, y + 3);
+      do Screen.drawRectangle(x + 4, y + 5, x + 5, y + 5);
+
+      return;
+   }
+
+   method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+   }
+}

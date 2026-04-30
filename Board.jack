@@ -1,0 +1,187 @@
+class Board {
+   field int rows;
+   field int cols;
+   field int cellSize;
+   field int originX;
+   field int originY;
+
+   constructor Board new() {
+      let rows = 21;
+      let cols = 31;
+      let cellSize = 10;
+      let originX = 101;
+      let originY = 38;
+      return this;
+   }
+
+   method int xOf(int col) {
+      return originX + (col * cellSize);
+   }
+
+   method int yOf(int row) {
+      return originY + (row * cellSize);
+   }
+
+   method boolean canEnter(int row, int col) {
+      if (row < 0) {
+         return false;
+      }
+      if (col < 0) {
+         return false;
+      }
+      if (row > (rows - 1)) {
+         return false;
+      }
+      if (col > (cols - 1)) {
+         return false;
+      }
+      if (isWall(row, col)) {
+         return false;
+      }
+      return true;
+   }
+
+   method boolean isWall(int row, int col) {
+      if (row = 0) {
+         return true;
+      }
+      if (row = (rows - 1)) {
+         return true;
+      }
+      if (col = 0) {
+         return true;
+      }
+      if (col = (cols - 1)) {
+         return true;
+      }
+
+      if ((row = 2) & (col > 2) & (col < 7)) {
+         return true;
+      }
+      if ((row = 2) & (col > 9) & (col < 14)) {
+         return true;
+      }
+      if ((row = 2) & (col > 16) & (col < 21)) {
+         return true;
+      }
+      if ((row = 2) & (col > 23) & (col < 28)) {
+         return true;
+      }
+      if ((row = 4) & (col > 2) & (col < 7)) {
+         return true;
+      }
+      if ((row = 4) & (col > 9) & (col < 21)) {
+         return true;
+      }
+      if ((row = 4) & (col > 23) & (col < 28)) {
+         return true;
+      }
+      if ((row > 1) & (row < 5) & (col = 15)) {
+         return true;
+      }
+      if ((row = 6) & (col > 1) & (col < 7)) {
+         return true;
+      }
+      if ((row = 6) & (col > 9) & (col < 13)) {
+         return true;
+      }
+      if ((row = 6) & (col > 18) & (col < 22)) {
+         return true;
+      }
+      if ((row = 6) & (col > 23) & (col < 29)) {
+         return true;
+      }
+      if ((row = 8) & (col > 2) & (col < 8)) {
+         return true;
+      }
+      if ((row = 8) & (col > 22) & (col < 28)) {
+         return true;
+      }
+      if ((row = 10) & (col > 2) & (col < 7)) {
+         return true;
+      }
+      if ((row = 10) & (col > 23) & (col < 28)) {
+         return true;
+      }
+      if ((row > 10) & (row < 14) & (col = 4)) {
+         return true;
+      }
+      if ((row > 10) & (row < 14) & (col = 26)) {
+         return true;
+      }
+      if ((row = 14) & (col > 2) & (col < 8)) {
+         return true;
+      }
+      if ((row = 14) & (col > 10) & (col < 14)) {
+         return true;
+      }
+      if ((row = 14) & (col > 16) & (col < 20)) {
+         return true;
+      }
+      if ((row = 14) & (col > 22) & (col < 28)) {
+         return true;
+      }
+      if ((row > 14) & (row < 18) & (col = 8)) {
+         return true;
+      }
+      if ((row > 14) & (row < 18) & (col = 22)) {
+         return true;
+      }
+      if ((row = 16) & (col > 5) & (col < 14)) {
+         return true;
+      }
+      if ((row = 16) & (col > 16) & (col < 25)) {
+         return true;
+      }
+      if ((row = 18) & (col > 2) & (col < 11)) {
+         return true;
+      }
+      if ((row = 18) & (col > 12) & (col < 18)) {
+         return true;
+      }
+      if ((row = 18) & (col > 19) & (col < 28)) {
+         return true;
+      }
+
+      return false;
+   }
+
+   method void drawAll() {
+      var int row;
+      var int col;
+
+      let row = 0;
+      while (row < rows) {
+         let col = 0;
+         while (col < cols) {
+            do drawCell(row, col);
+            let col = col + 1;
+         }
+         let row = row + 1;
+      }
+
+      return;
+   }
+
+   method void drawCell(int row, int col) {
+      var int x;
+      var int y;
+
+      let x = xOf(col);
+      let y = yOf(row);
+
+      if (isWall(row, col)) {
+         do Screen.setColor(false);
+      } else {
+         do Screen.setColor(true);
+      }
+      do Screen.drawRectangle(x, y, (x + cellSize) - 1, (y + cellSize) - 1);
+
+      return;
+   }
+
+   method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+   }
+}

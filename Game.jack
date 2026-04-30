@@ -1,0 +1,142 @@
+class Game {
+   field Board board;
+   field Player player;
+   field boolean running;
+   field int speedLevel;
+   field int speedDelay;
+   field int moveWait;
+
+   constructor Game new() {
+      let board = Board.new();
+      let player = Player.new(board, 15, 15);
+      let running = true;
+      let speedLevel = 2;
+      let speedDelay = 1;
+      let moveWait = 0;
+      return this;
+   }
+
+   method void run() {
+      var int key;
+
+      do Screen.clearScreen();
+      do board.drawAll();
+      do player.draw();
+      do drawHud();
+
+      while (running) {
+         let key = Keyboard.keyPressed();
+
+         if (key = 140) {
+            let running = false;
+         }
+
+         do updateSpeed(key);
+         do tryMovePlayer(key);
+
+         do Sys.wait(45);
+      }
+
+      return;
+   }
+
+   method void updateSpeed(int key) {
+      if (key = 49) {
+         let speedLevel = 1;
+         let speedDelay = 2;
+         do drawHud();
+      }
+      if (key = 50) {
+         let speedLevel = 2;
+         let speedDelay = 1;
+         do drawHud();
+      }
+      if (key = 51) {
+         let speedLevel = 3;
+         let speedDelay = 0;
+         do drawHud();
+      }
+      return;
+   }
+
+   method void tryMovePlayer(int key) {
+      var boolean moved;
+
+      if (moveWait > 0) {
+         let moveWait = moveWait - 1;
+         return;
+      }
+
+      let moved = false;
+
+      if (key = 130) {
+         let moved = player.move(0, -1);
+      }
+      if (key = 131) {
+         let moved = player.move(-1, 0);
+      }
+      if (key = 132) {
+         let moved = player.move(0, 1);
+      }
+      if (key = 133) {
+         let moved = player.move(1, 0);
+      }
+
+      if (moved) {
+         let moveWait = speedDelay;
+      }
+
+      return;
+   }
+
+   method void drawHud() {
+      do Screen.setColor(false);
+      do Screen.drawRectangle(0, 0, 511, 31);
+      do Screen.setColor(true);
+      do Output.moveCursor(0, 0);
+      do printText();
+      do Output.printInt(speedLevel);
+      return;
+   }
+
+   method void printText() {
+      do Output.printChar(77);
+      do Output.printChar(111);
+      do Output.printChar(118);
+      do Output.printChar(105);
+      do Output.printChar(109);
+      do Output.printChar(105);
+      do Output.printChar(101);
+      do Output.printChar(110);
+      do Output.printChar(116);
+      do Output.printChar(111);
+      do Output.printChar(32);
+      do Output.printChar(101);
+      do Output.printChar(115);
+      do Output.printChar(116);
+      do Output.printChar(114);
+      do Output.printChar(117);
+      do Output.printChar(99);
+      do Output.printChar(116);
+      do Output.printChar(117);
+      do Output.printChar(114);
+      do Output.printChar(97);
+      do Output.printChar(108);
+      do Output.printChar(32);
+      do Output.printChar(45);
+      do Output.printChar(32);
+      do Output.printChar(86);
+      do Output.printChar(101);
+      do Output.printChar(108);
+      do Output.printChar(58);
+      do Output.printChar(32);
+      return;
+   }
+
+   method void dispose() {
+      do player.dispose();
+      do board.dispose();
+      do Memory.deAlloc(this);
+      return;
+   }
+}
