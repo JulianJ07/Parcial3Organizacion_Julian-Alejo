@@ -18,6 +18,14 @@ Esta version es una entrega estructural para Nand2Tetris en Jack. El objetivo no
 - estructura modular con clases separadas.
 
 La version completa del juego se desarrollara en una entrega posterior. En esa entrega final se agregaran rivales, poder para comer rivales, portales, colisiones avanzadas y condiciones completas de victoria o derrota. Los portales estan planeados, pero no hacen parte del funcionamiento de esta entrega.
+<p align="center">
+  <img 
+    src="https://github.com/user-attachments/assets/d2d1b0c3-ce9f-4646-a450-03df833cc0de"
+    alt="Imagen del proyecto"
+    width="700"
+  />
+</p>
+
 
 ## Como ejecutar
 
