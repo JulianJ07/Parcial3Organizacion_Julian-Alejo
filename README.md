@@ -102,8 +102,3 @@ La estructura esta dividida en `Main`, `Game`, `Board` y `Player`. Los construct
 9. Optimizar rendimiento:
    se evitara redibujar todo el mapa en cada ciclo. Solo se actualizaran las celdas que cambien.
 
-## Compilacion
-
-Si modificas los archivos `.jack`, recompila la carpeta con:
-
-`C:\Users\Julian\Downloads\nand2tetris\nand2tetris\tools\JackCompiler.bat "C:\Users\Julian\Documents\Codex\2026-04-28\PLANEACION JUEGO"`
