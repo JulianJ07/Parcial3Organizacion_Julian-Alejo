@@ -1,8 +1,8 @@
 # PLANEACION JUEGO - Pacman Futbolero
 
 # Desarrollado por:
-Julian Jimenez
-Alejandro Cifuentes
+Julian Jimenez.
+Alejandro Cifuentes.
 
 ---
 ## Proposito de esta entrega
