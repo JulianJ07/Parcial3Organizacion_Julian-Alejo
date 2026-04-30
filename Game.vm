@@ -1,5 +1,5 @@
 function Game.new 0
-push constant 9
+push constant 10
 call Memory.alloc 1
 pop pointer 0
 call Board.new 0
@@ -9,21 +9,26 @@ push constant 15
 push constant 15
 call Player.new 3
 pop this 1
+push this 0
+push constant 10
+push constant 15
+call Rival.new 3
+pop this 2
 push constant 0
 not
-pop this 2
-push constant 2
 pop this 3
-push constant 1
+push constant 2
 pop this 4
 push constant 1
 pop this 5
-push constant 0
+push constant 1
 pop this 6
 push constant 0
 pop this 7
 push constant 0
 pop this 8
+push constant 0
+pop this 9
 push pointer 0
 return
 function Game.run 1
@@ -37,11 +42,14 @@ pop temp 0
 push this 1
 call Player.draw 1
 pop temp 0
+push this 2
+call Rival.draw 1
+pop temp 0
 push pointer 0
 call Game.drawHud 1
 pop temp 0
 label WHILE_EXP0
-push this 2
+push this 3
 not
 if-goto WHILE_END0
 call Keyboard.keyPressed 0
@@ -53,7 +61,7 @@ if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push constant 0
-pop this 2
+pop this 3
 label IF_FALSE0
 push pointer 0
 push local 0
@@ -106,17 +114,17 @@ function Game.restartGame 0
 push argument 0
 pop pointer 0
 push constant 2
-pop this 3
-push constant 1
-pop this 5
-push this 5
 pop this 4
-push constant 0
+push constant 1
 pop this 6
+push this 6
+pop this 5
 push constant 0
 pop this 7
 push constant 0
 pop this 8
+push constant 0
+pop this 9
 push this 0
 call Board.resetItems 1
 pop temp 0
@@ -125,6 +133,11 @@ push constant 15
 push constant 15
 call Player.resetPosition 3
 pop temp 0
+push this 2
+push constant 10
+push constant 15
+call Rival.resetPosition 3
+pop temp 0
 call Screen.clearScreen 0
 pop temp 0
 push this 0
@@ -132,6 +145,9 @@ call Board.drawAll 1
 pop temp 0
 push this 1
 call Player.draw 1
+pop temp 0
+push this 2
+call Rival.draw 1
 pop temp 0
 push pointer 0
 call Game.drawHud 1
@@ -148,17 +164,17 @@ if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push constant 1
-pop this 3
+pop this 4
 push constant 2
-pop this 5
-push this 8
+pop this 6
+push this 9
 push constant 0
 eq
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-push this 5
-pop this 4
+push this 6
+pop this 5
 label IF_FALSE1
 push pointer 0
 call Game.drawHud 1
@@ -171,17 +187,17 @@ if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
 push constant 2
-pop this 3
+pop this 4
 push constant 1
-pop this 5
-push this 8
+pop this 6
+push this 9
 push constant 0
 eq
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
-push this 5
-pop this 4
+push this 6
+pop this 5
 label IF_FALSE3
 push pointer 0
 call Game.drawHud 1
@@ -194,17 +210,17 @@ if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
 push constant 3
-pop this 3
+pop this 4
 push constant 0
-pop this 5
-push this 8
+pop this 6
+push this 9
 push constant 0
 eq
 if-goto IF_TRUE5
 goto IF_FALSE5
 label IF_TRUE5
-push this 5
-pop this 4
+push this 6
+pop this 5
 label IF_FALSE5
 push pointer 0
 call Game.drawHud 1
@@ -215,16 +231,16 @@ return
 function Game.tryMovePlayer 1
 push argument 0
 pop pointer 0
-push this 6
+push this 7
 push constant 0
 gt
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push this 6
+push this 7
 push constant 1
 sub
-pop this 6
+pop this 7
 push constant 0
 return
 label IF_FALSE0
@@ -236,11 +252,11 @@ eq
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-push this 1
+push pointer 0
 push constant 0
 push constant 1
 neg
-call Player.move 3
+call Game.tryMovePlayerBy 3
 pop local 0
 label IF_FALSE1
 push argument 1
@@ -249,11 +265,11 @@ eq
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
-push this 1
+push pointer 0
 push constant 1
 neg
 push constant 0
-call Player.move 3
+call Game.tryMovePlayerBy 3
 pop local 0
 label IF_FALSE2
 push argument 1
@@ -262,10 +278,10 @@ eq
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
-push this 1
+push pointer 0
 push constant 0
 push constant 1
-call Player.move 3
+call Game.tryMovePlayerBy 3
 pop local 0
 label IF_FALSE3
 push argument 1
@@ -274,10 +290,10 @@ eq
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
-push this 1
+push pointer 0
 push constant 1
 push constant 0
-call Player.move 3
+call Game.tryMovePlayerBy 3
 pop local 0
 label IF_FALSE4
 push local 0
@@ -287,10 +303,38 @@ label IF_TRUE5
 push pointer 0
 call Game.collectCurrentCell 1
 pop temp 0
-push this 4
-pop this 6
+push this 5
+pop this 7
 label IF_FALSE5
 push constant 0
+return
+function Game.tryMovePlayerBy 2
+push argument 0
+pop pointer 0
+push this 1
+call Player.getRow 1
+push argument 1
+add
+pop local 0
+push this 1
+call Player.getCol 1
+push argument 2
+add
+pop local 1
+push this 2
+push local 0
+push local 1
+call Rival.isAt 3
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push this 1
+push argument 1
+push argument 2
+call Player.move 3
 return
 function Game.collectCurrentCell 1
 push argument 0
@@ -308,10 +352,10 @@ eq
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push this 7
+push this 8
 push constant 10
 add
-pop this 7
+pop this 8
 push pointer 0
 call Game.drawHud 1
 pop temp 0
@@ -322,14 +366,14 @@ eq
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-push this 7
+push this 8
 push constant 50
 add
-pop this 7
-push constant 80
 pop this 8
+push constant 80
+pop this 9
 push constant 0
-pop this 4
+pop this 5
 push pointer 0
 call Game.drawHud 1
 pop temp 0
@@ -339,24 +383,24 @@ return
 function Game.updateBoostTimer 0
 push argument 0
 pop pointer 0
-push this 8
+push this 9
 push constant 0
 gt
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push this 8
+push this 9
 push constant 1
 sub
-pop this 8
-push this 8
+pop this 9
+push this 9
 push constant 0
 eq
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-push this 5
-pop this 4
+push this 6
+pop this 5
 push pointer 0
 call Game.drawHud 1
 pop temp 0
@@ -387,16 +431,16 @@ pop temp 0
 push pointer 0
 call Game.printText 1
 pop temp 0
-push this 3
+push this 4
 call Output.printInt 1
 pop temp 0
 push pointer 0
 call Game.printScoreText 1
 pop temp 0
-push this 7
+push this 8
 call Output.printInt 1
 pop temp 0
-push this 8
+push this 9
 push constant 0
 gt
 if-goto IF_TRUE0
@@ -560,6 +604,9 @@ push argument 0
 pop pointer 0
 push this 1
 call Player.dispose 1
+pop temp 0
+push this 2
+call Rival.dispose 1
 pop temp 0
 push this 0
 call Board.dispose 1

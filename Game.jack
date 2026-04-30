@@ -1,6 +1,7 @@
 class Game {
    field Board board;
    field Player player;
+   field Rival rival;
    field boolean running;
    field int speedLevel;
    field int speedDelay;
@@ -12,6 +13,7 @@ class Game {
    constructor Game new() {
       let board = Board.new();
       let player = Player.new(board, 15, 15);
+      let rival = Rival.new(board, 10, 15);
       let running = true;
       let speedLevel = 2;
       let speedDelay = 1;
@@ -28,6 +30,7 @@ class Game {
       do Screen.clearScreen();
       do board.drawAll();
       do player.draw();
+      do rival.draw();
       do drawHud();
 
       while (running) {
@@ -68,9 +71,11 @@ class Game {
 
       do board.resetItems();
       do player.resetPosition(15, 15);
+      do rival.resetPosition(10, 15);
       do Screen.clearScreen();
       do board.drawAll();
       do player.draw();
+      do rival.draw();
       do drawHud();
 
       return;
@@ -115,16 +120,16 @@ class Game {
       let moved = false;
 
       if (key = 130) {
-         let moved = player.move(0, -1);
+         let moved = tryMovePlayerBy(0, -1);
       }
       if (key = 131) {
-         let moved = player.move(-1, 0);
+         let moved = tryMovePlayerBy(-1, 0);
       }
       if (key = 132) {
-         let moved = player.move(0, 1);
+         let moved = tryMovePlayerBy(0, 1);
       }
       if (key = 133) {
-         let moved = player.move(1, 0);
+         let moved = tryMovePlayerBy(1, 0);
       }
 
       if (moved) {
@@ -133,6 +138,20 @@ class Game {
       }
 
       return;
+   }
+
+   method boolean tryMovePlayerBy(int deltaRow, int deltaCol) {
+      var int nextRow;
+      var int nextCol;
+
+      let nextRow = player.getRow() + deltaRow;
+      let nextCol = player.getCol() + deltaCol;
+
+      if (rival.isAt(nextRow, nextCol)) {
+         return false;
+      }
+
+      return player.move(deltaRow, deltaCol);
    }
 
    method void collectCurrentCell() {
@@ -240,6 +259,7 @@ class Game {
 
    method void dispose() {
       do player.dispose();
+      do rival.dispose();
       do board.dispose();
       do Memory.deAlloc(this);
       return;

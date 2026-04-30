@@ -168,6 +168,7 @@ class Board {
       }
 
       do setItem(15, 15, 0);
+      do setItem(10, 15, 0);
       do setItem(19, 15, 2);
 
       return;

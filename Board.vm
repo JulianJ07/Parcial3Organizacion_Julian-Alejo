@@ -727,6 +727,12 @@ push constant 0
 call Board.setItem 4
 pop temp 0
 push pointer 0
+push constant 10
+push constant 15
+push constant 0
+call Board.setItem 4
+pop temp 0
+push pointer 0
 push constant 19
 push constant 15
 push constant 2

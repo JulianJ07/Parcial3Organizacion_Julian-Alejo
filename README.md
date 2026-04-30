@@ -15,9 +15,10 @@ Esta version es una entrega estructural para Nand2Tetris en Jack. El objetivo no
 - cambio de velocidad del personaje;
 - puntos coleccionables dentro del mapa;
 - un impulsor de velocidad que aumenta temporalmente la velocidad del jugador;
+- un rival implementado como clase y dibujado en el centro del mapa;
 - estructura modular con clases separadas.
 
-La version completa del juego se desarrollara en una entrega posterior. En esa entrega final se agregaran rivales, poder para comer rivales, portales, colisiones avanzadas y condiciones completas de victoria o derrota.
+La version completa del juego se desarrollara en una entrega posterior. En esa entrega final se agregara el movimiento del rival, poder para comer rivales, portales, colisiones avanzadas y condiciones completas de victoria o derrota.
 <p align="center">
   <img 
     src="https://github.com/user-attachments/assets/d2d1b0c3-ce9f-4646-a450-03df833cc0de"
@@ -69,15 +70,17 @@ El jugador recoge automaticamente los puntos al pasar por encima de ellos. Si re
 
 `Player.jack` representa al futbolista. Guarda su fila y columna como `field`, valida si puede moverse y redibuja solamente la celda anterior y la nueva para evitar parpadeo innecesario.
 
+`Rival.jack` representa al rival. En esta entrega aparece quieto en el centro del mapa para demostrar la estructura de clase y el dibujado del objeto. Su movimiento se implementara en la proxima entrega.
+
 ## Relacion con la rubrica
 
 ### Graficos con Screen
 
-El tablero completo se dibuja con `Screen.drawRectangle()`. Cada celda tiene un tamano fijo de 10 pixeles, con paredes y caminos diferenciados visualmente. Los puntos coleccionables y el impulsor tambien se dibujan con la API `Screen`, sin depender de imagenes externas. Esto cumple el requisito de mostrar un tablero coherente y visible.
+El tablero completo se dibuja con `Screen.drawRectangle()`. Cada celda tiene un tamano fijo de 10 pixeles, con paredes y caminos diferenciados visualmente. Los puntos coleccionables, el impulsor y el rival tambien se dibujan con la API `Screen`, sin depender de imagenes externas. Esto cumple el requisito de mostrar un tablero coherente y visible.
 
 ### Gestion de fichas con OOP
 
-El personaje no esta escrito como codigo suelto dentro de `Main`; esta encapsulado en la clase `Player`. El tablero tambien esta encapsulado en `Board`, incluyendo la informacion de paredes, puntos e impulsores. Esta separacion facilita agregar rivales, portales y colisiones en la entrega final.
+El personaje no esta escrito como codigo suelto dentro de `Main`; esta encapsulado en la clase `Player`. El rival tambien esta encapsulado en `Rival`, con sus propios campos de posicion y metodo de dibujo. El tablero esta encapsulado en `Board`, incluyendo la informacion de paredes, puntos e impulsores. Esta separacion facilita agregar movimiento de rivales, portales y colisiones en la entrega final.
 
 ### Input y movimiento
 
@@ -96,7 +99,7 @@ La estructura esta dividida en `Main`, `Game`, `Board` y `Player`. Los construct
    cada objeto sumara una cantidad diferente de puntos y se mostrara una condicion clara de victoria.
 
 3. Agregar rivales:
-   se implementaran como objetos de una clase `Rival`, con posicion, dibujo y movimiento propio.
+   la clase `Rival` ya existe y se dibuja en el mapa. En la proxima entrega se agregara su movimiento propio.
 
 4. Agregar persecucion:
    los rivales buscaran al jugador usando rutas validas del laberinto, evitando paredes.
@@ -118,6 +121,6 @@ La estructura esta dividida en `Main`, `Game`, `Board` y `Player`. Los construct
 
 ## Conclusion
 
-Esta entrega deja lista la base estructural de Pacman Futbolero en Jack. El proyecto ya muestra un tablero funcional con `Screen`, un futbolista encapsulado como objeto, movimiento controlado con `Keyboard.keyPressed()`, puntos coleccionables, impulsor de velocidad, reinicio de partida y una arquitectura separada en clases. Con esta base, la entrega final podra crecer de forma ordenada agregando rivales, persecucion, poderes, portales planeados, colisiones y condiciones completas de victoria o derrota.
+Esta entrega deja lista la base estructural de Pacman Futbolero en Jack. El proyecto ya muestra un tablero funcional con `Screen`, un futbolista encapsulado como objeto, un rival estatico en el centro del mapa, movimiento controlado con `Keyboard.keyPressed()`, puntos coleccionables, impulsor de velocidad, reinicio de partida y una arquitectura separada en clases. Con esta base, la entrega final podra crecer de forma ordenada agregando movimiento del rival, persecucion, poderes, portales planeados, colisiones y condiciones completas de victoria o derrota.
 
 El codigo cumple el enfoque principal de la rubrica porque demuestra uso de API grafica, manejo de input, organizacion orientada a objetos y actualizacion controlada de pantalla para evitar redibujos innecesarios.
