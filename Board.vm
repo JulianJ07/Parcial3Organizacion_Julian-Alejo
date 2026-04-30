@@ -1,5 +1,5 @@
 function Board.new 0
-push constant 5
+push constant 6
 call Memory.alloc 1
 pop pointer 0
 push constant 21
@@ -12,6 +12,14 @@ push constant 101
 pop this 3
 push constant 38
 pop this 4
+push this 0
+push this 1
+call Math.multiply 2
+call Array.new 1
+pop this 5
+push pointer 0
+call Board.resetItems 1
+pop temp 0
 push pointer 0
 return
 function Board.xOf 0
@@ -659,6 +667,126 @@ return
 label IF_FALSE32
 push constant 0
 return
+function Board.resetItems 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 0
+lt
+not
+if-goto WHILE_END0
+push constant 0
+pop local 1
+label WHILE_EXP1
+push local 1
+push this 1
+lt
+not
+if-goto WHILE_END1
+push pointer 0
+push local 0
+push local 1
+call Board.isWall 3
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push local 0
+push local 1
+push constant 0
+call Board.setItem 4
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push pointer 0
+push local 0
+push local 1
+push constant 1
+call Board.setItem 4
+pop temp 0
+label IF_END0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push pointer 0
+push constant 15
+push constant 15
+push constant 0
+call Board.setItem 4
+pop temp 0
+push pointer 0
+push constant 19
+push constant 15
+push constant 2
+call Board.setItem 4
+pop temp 0
+push constant 0
+return
+function Board.itemAt 0
+push argument 0
+pop pointer 0
+push argument 1
+push this 1
+call Math.multiply 2
+push argument 2
+add
+push this 5
+add
+pop pointer 1
+push that 0
+return
+function Board.setItem 0
+push argument 0
+pop pointer 0
+push argument 1
+push this 1
+call Math.multiply 2
+push argument 2
+add
+push this 5
+add
+push argument 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+return
+function Board.collectAt 1
+push argument 0
+pop pointer 0
+push pointer 0
+push argument 1
+push argument 2
+call Board.itemAt 3
+pop local 0
+push local 0
+push constant 0
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push argument 1
+push argument 2
+push constant 0
+call Board.setItem 4
+pop temp 0
+label IF_FALSE0
+push local 0
+return
 function Board.drawAll 2
 push argument 0
 pop pointer 0
@@ -718,13 +846,6 @@ label IF_TRUE0
 push constant 0
 call Screen.setColor 1
 pop temp 0
-goto IF_END0
-label IF_FALSE0
-push constant 0
-not
-call Screen.setColor 1
-pop temp 0
-label IF_END0
 push local 0
 push local 1
 push local 0
@@ -739,11 +860,152 @@ push constant 1
 sub
 call Screen.drawRectangle 4
 pop temp 0
+goto IF_END0
+label IF_FALSE0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push local 0
+push local 1
+push local 0
+push this 2
+add
+push constant 1
+sub
+push local 1
+push this 2
+add
+push constant 1
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push pointer 0
+push argument 1
+push argument 2
+call Board.drawItem 3
+pop temp 0
+label IF_END0
+push constant 0
+return
+function Board.drawItem 3
+push argument 0
+pop pointer 0
+push pointer 0
+push argument 1
+push argument 2
+call Board.itemAt 3
+pop local 0
+push pointer 0
+push argument 2
+call Board.xOf 2
+pop local 1
+push pointer 0
+push argument 1
+call Board.yOf 2
+pop local 2
+push local 0
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push local 1
+push constant 4
+add
+push local 2
+push constant 4
+add
+push local 1
+push constant 5
+add
+push local 2
+push constant 5
+add
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE0
+push local 0
+push constant 2
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push local 1
+push constant 3
+add
+push local 2
+push constant 2
+add
+push local 1
+push constant 6
+add
+push local 2
+push constant 7
+add
+call Screen.drawRectangle 4
+pop temp 0
+push local 1
+push constant 2
+add
+push local 2
+push constant 3
+add
+push local 1
+push constant 7
+add
+push local 2
+push constant 6
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push local 1
+push constant 4
+add
+push local 2
+push constant 3
+add
+push local 1
+push constant 5
+add
+push local 2
+push constant 6
+add
+call Screen.drawRectangle 4
+pop temp 0
+push local 1
+push constant 3
+add
+push local 2
+push constant 4
+add
+push local 1
+push constant 6
+add
+push local 2
+push constant 5
+add
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE1
 push constant 0
 return
 function Board.dispose 0
 push argument 0
 pop pointer 0
+push this 5
+call Array.dispose 1
+pop temp 0
 push pointer 0
 call Memory.deAlloc 1
 pop temp 0

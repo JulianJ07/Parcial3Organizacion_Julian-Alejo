@@ -1,5 +1,5 @@
 function Game.new 0
-push constant 6
+push constant 9
 call Memory.alloc 1
 pop pointer 0
 call Board.new 0
@@ -16,8 +16,14 @@ push constant 2
 pop this 3
 push constant 1
 pop this 4
-push constant 0
+push constant 1
 pop this 5
+push constant 0
+pop this 6
+push constant 0
+pop this 7
+push constant 0
+pop this 8
 push pointer 0
 return
 function Game.run 1
@@ -57,6 +63,9 @@ push pointer 0
 push local 0
 call Game.tryMovePlayer 2
 pop temp 0
+push pointer 0
+call Game.updateBoostTimer 1
+pop temp 0
 push constant 45
 call Sys.wait 1
 pop temp 0
@@ -76,7 +85,16 @@ label IF_TRUE0
 push constant 1
 pop this 3
 push constant 2
+pop this 5
+push this 8
+push constant 0
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 5
 pop this 4
+label IF_FALSE1
 push pointer 0
 call Game.drawHud 1
 pop temp 0
@@ -84,46 +102,64 @@ label IF_FALSE0
 push argument 1
 push constant 50
 eq
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
-push constant 2
-pop this 3
-push constant 1
-pop this 4
-push pointer 0
-call Game.drawHud 1
-pop temp 0
-label IF_FALSE1
-push argument 1
-push constant 51
-eq
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
-push constant 3
+push constant 2
 pop this 3
+push constant 1
+pop this 5
+push this 8
 push constant 0
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push this 5
 pop this 4
+label IF_FALSE3
 push pointer 0
 call Game.drawHud 1
 pop temp 0
 label IF_FALSE2
+push argument 1
+push constant 51
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push constant 3
+pop this 3
+push constant 0
+pop this 5
+push this 8
+push constant 0
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push this 5
+pop this 4
+label IF_FALSE5
+push pointer 0
+call Game.drawHud 1
+pop temp 0
+label IF_FALSE4
 push constant 0
 return
 function Game.tryMovePlayer 1
 push argument 0
 pop pointer 0
-push this 5
+push this 6
 push constant 0
 gt
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push this 5
+push this 6
 push constant 1
 sub
-pop this 5
+pop this 6
 push constant 0
 return
 label IF_FALSE0
@@ -183,9 +219,84 @@ push local 0
 if-goto IF_TRUE5
 goto IF_FALSE5
 label IF_TRUE5
+push pointer 0
+call Game.collectCurrentCell 1
+pop temp 0
 push this 4
-pop this 5
+pop this 6
 label IF_FALSE5
+push constant 0
+return
+function Game.collectCurrentCell 1
+push argument 0
+pop pointer 0
+push this 0
+push this 1
+call Player.getRow 1
+push this 1
+call Player.getCol 1
+call Board.collectAt 3
+pop local 0
+push local 0
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 7
+push constant 10
+add
+pop this 7
+push pointer 0
+call Game.drawHud 1
+pop temp 0
+label IF_FALSE0
+push local 0
+push constant 2
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 7
+push constant 50
+add
+pop this 7
+push constant 80
+pop this 8
+push constant 0
+pop this 4
+push pointer 0
+call Game.drawHud 1
+pop temp 0
+label IF_FALSE1
+push constant 0
+return
+function Game.updateBoostTimer 0
+push argument 0
+pop pointer 0
+push this 8
+push constant 0
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 8
+push constant 1
+sub
+pop this 8
+push this 8
+push constant 0
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 5
+pop this 4
+push pointer 0
+call Game.drawHud 1
+pop temp 0
+label IF_FALSE1
+label IF_FALSE0
 push constant 0
 return
 function Game.drawHud 0
@@ -214,6 +325,22 @@ pop temp 0
 push this 3
 call Output.printInt 1
 pop temp 0
+push pointer 0
+call Game.printScoreText 1
+pop temp 0
+push this 7
+call Output.printInt 1
+pop temp 0
+push this 8
+push constant 0
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+call Game.printBoostText 1
+pop temp 0
+label IF_FALSE0
 push constant 0
 return
 function Game.printText 0
@@ -307,6 +434,58 @@ push constant 58
 call Output.printChar 1
 pop temp 0
 push constant 32
+call Output.printChar 1
+pop temp 0
+push constant 0
+return
+function Game.printScoreText 0
+push argument 0
+pop pointer 0
+push constant 32
+call Output.printChar 1
+pop temp 0
+push constant 80
+call Output.printChar 1
+pop temp 0
+push constant 116
+call Output.printChar 1
+pop temp 0
+push constant 115
+call Output.printChar 1
+pop temp 0
+push constant 58
+call Output.printChar 1
+pop temp 0
+push constant 32
+call Output.printChar 1
+pop temp 0
+push constant 0
+return
+function Game.printBoostText 0
+push argument 0
+pop pointer 0
+push constant 32
+call Output.printChar 1
+pop temp 0
+push constant 73
+call Output.printChar 1
+pop temp 0
+push constant 109
+call Output.printChar 1
+pop temp 0
+push constant 112
+call Output.printChar 1
+pop temp 0
+push constant 117
+call Output.printChar 1
+pop temp 0
+push constant 108
+call Output.printChar 1
+pop temp 0
+push constant 115
+call Output.printChar 1
+pop temp 0
+push constant 111
 call Output.printChar 1
 pop temp 0
 push constant 0

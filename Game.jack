@@ -4,7 +4,10 @@ class Game {
    field boolean running;
    field int speedLevel;
    field int speedDelay;
+   field int normalSpeedDelay;
    field int moveWait;
+   field int score;
+   field int boostTimer;
 
    constructor Game new() {
       let board = Board.new();
@@ -12,7 +15,10 @@ class Game {
       let running = true;
       let speedLevel = 2;
       let speedDelay = 1;
+      let normalSpeedDelay = 1;
       let moveWait = 0;
+      let score = 0;
+      let boostTimer = 0;
       return this;
    }
 
@@ -33,6 +39,7 @@ class Game {
 
          do updateSpeed(key);
          do tryMovePlayer(key);
+         do updateBoostTimer();
 
          do Sys.wait(45);
       }
@@ -43,17 +50,26 @@ class Game {
    method void updateSpeed(int key) {
       if (key = 49) {
          let speedLevel = 1;
-         let speedDelay = 2;
+         let normalSpeedDelay = 2;
+         if (boostTimer = 0) {
+            let speedDelay = normalSpeedDelay;
+         }
          do drawHud();
       }
       if (key = 50) {
          let speedLevel = 2;
-         let speedDelay = 1;
+         let normalSpeedDelay = 1;
+         if (boostTimer = 0) {
+            let speedDelay = normalSpeedDelay;
+         }
          do drawHud();
       }
       if (key = 51) {
          let speedLevel = 3;
-         let speedDelay = 0;
+         let normalSpeedDelay = 0;
+         if (boostTimer = 0) {
+            let speedDelay = normalSpeedDelay;
+         }
          do drawHud();
       }
       return;
@@ -83,7 +99,40 @@ class Game {
       }
 
       if (moved) {
+         do collectCurrentCell();
          let moveWait = speedDelay;
+      }
+
+      return;
+   }
+
+   method void collectCurrentCell() {
+      var int item;
+
+      let item = board.collectAt(player.getRow(), player.getCol());
+
+      if (item = 1) {
+         let score = score + 10;
+         do drawHud();
+      }
+
+      if (item = 2) {
+         let score = score + 50;
+         let boostTimer = 80;
+         let speedDelay = 0;
+         do drawHud();
+      }
+
+      return;
+   }
+
+   method void updateBoostTimer() {
+      if (boostTimer > 0) {
+         let boostTimer = boostTimer - 1;
+         if (boostTimer = 0) {
+            let speedDelay = normalSpeedDelay;
+            do drawHud();
+         }
       }
 
       return;
@@ -96,6 +145,11 @@ class Game {
       do Output.moveCursor(0, 0);
       do printText();
       do Output.printInt(speedLevel);
+      do printScoreText();
+      do Output.printInt(score);
+      if (boostTimer > 0) {
+         do printBoostText();
+      }
       return;
    }
 
@@ -130,6 +184,28 @@ class Game {
       do Output.printChar(108);
       do Output.printChar(58);
       do Output.printChar(32);
+      return;
+   }
+
+   method void printScoreText() {
+      do Output.printChar(32);
+      do Output.printChar(80);
+      do Output.printChar(116);
+      do Output.printChar(115);
+      do Output.printChar(58);
+      do Output.printChar(32);
+      return;
+   }
+
+   method void printBoostText() {
+      do Output.printChar(32);
+      do Output.printChar(73);
+      do Output.printChar(109);
+      do Output.printChar(112);
+      do Output.printChar(117);
+      do Output.printChar(108);
+      do Output.printChar(115);
+      do Output.printChar(111);
       return;
    }
 

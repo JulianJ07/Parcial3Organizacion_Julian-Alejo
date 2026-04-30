@@ -4,6 +4,7 @@ class Board {
    field int cellSize;
    field int originX;
    field int originY;
+   field Array items;
 
    constructor Board new() {
       let rows = 21;
@@ -11,6 +12,8 @@ class Board {
       let cellSize = 10;
       let originX = 101;
       let originY = 38;
+      let items = Array.new(rows * cols);
+      do resetItems();
       return this;
    }
 
@@ -146,6 +149,50 @@ class Board {
       return false;
    }
 
+   method void resetItems() {
+      var int row;
+      var int col;
+
+      let row = 0;
+      while (row < rows) {
+         let col = 0;
+         while (col < cols) {
+            if (isWall(row, col)) {
+               do setItem(row, col, 0);
+            } else {
+               do setItem(row, col, 1);
+            }
+            let col = col + 1;
+         }
+         let row = row + 1;
+      }
+
+      do setItem(15, 15, 0);
+      do setItem(19, 15, 2);
+
+      return;
+   }
+
+   method int itemAt(int row, int col) {
+      return items[(row * cols) + col];
+   }
+
+   method void setItem(int row, int col, int value) {
+      let items[(row * cols) + col] = value;
+      return;
+   }
+
+   method int collectAt(int row, int col) {
+      var int item;
+
+      let item = itemAt(row, col);
+      if (item > 0) {
+         do setItem(row, col, 0);
+      }
+
+      return item;
+   }
+
    method void drawAll() {
       var int row;
       var int col;
@@ -172,15 +219,44 @@ class Board {
 
       if (isWall(row, col)) {
          do Screen.setColor(false);
+         do Screen.drawRectangle(x, y, (x + cellSize) - 1, (y + cellSize) - 1);
       } else {
          do Screen.setColor(true);
+         do Screen.drawRectangle(x, y, (x + cellSize) - 1, (y + cellSize) - 1);
+         do drawItem(row, col);
       }
-      do Screen.drawRectangle(x, y, (x + cellSize) - 1, (y + cellSize) - 1);
+
+      return;
+   }
+
+   method void drawItem(int row, int col) {
+      var int item;
+      var int x;
+      var int y;
+
+      let item = itemAt(row, col);
+      let x = xOf(col);
+      let y = yOf(row);
+
+      if (item = 1) {
+         do Screen.setColor(false);
+         do Screen.drawRectangle(x + 4, y + 4, x + 5, y + 5);
+      }
+
+      if (item = 2) {
+         do Screen.setColor(false);
+         do Screen.drawRectangle(x + 3, y + 2, x + 6, y + 7);
+         do Screen.drawRectangle(x + 2, y + 3, x + 7, y + 6);
+         do Screen.setColor(true);
+         do Screen.drawRectangle(x + 4, y + 3, x + 5, y + 6);
+         do Screen.drawRectangle(x + 3, y + 4, x + 6, y + 5);
+      }
 
       return;
    }
 
    method void dispose() {
+      do items.dispose();
       do Memory.deAlloc(this);
       return;
    }
