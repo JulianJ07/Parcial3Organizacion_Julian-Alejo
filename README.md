@@ -46,15 +46,16 @@ La version completa del juego se desarrollara en una entrega posterior. En esa e
 - Tecla `1`: velocidad lenta.
 - Tecla `2`: velocidad normal.
 - Tecla `3`: velocidad rapida.
+- Tecla `R`: reiniciar el juego.
 - `ESC`: salir.
 
-El jugador recoge automaticamente los puntos al pasar por encima de ellos. Si recoge el impulsor de velocidad, la velocidad aumenta durante un tiempo corto y luego vuelve al nivel elegido con las teclas `1`, `2` o `3`.
+El jugador recoge automaticamente los puntos al pasar por encima de ellos. Si recoge el impulsor de velocidad, la velocidad aumenta durante un tiempo corto y luego vuelve al nivel elegido con las teclas `1`, `2` o `3`. Con `R` se reinicia el tablero, el puntaje, el impulsor y la posicion inicial del jugador.
 
 ## Estructura de clases
 
 `Main.jack` es el punto de entrada. Crea el objeto `Game`, ejecuta el ciclo principal y libera memoria al terminar.
 
-`Game.jack` controla el flujo del programa. Lee el teclado, aplica el movimiento, permite cambiar la velocidad, suma el puntaje de los puntos recogidos y activa el impulsor temporal de velocidad.
+`Game.jack` controla el flujo del programa. Lee el teclado, aplica el movimiento, permite cambiar la velocidad, suma el puntaje de los puntos recogidos, activa el impulsor temporal de velocidad y reinicia la partida cuando se presiona `R`.
 
 `Board.jack` representa el tablero. Define las dimensiones de la cuadricula, convierte filas y columnas a coordenadas de pantalla, valida paredes con `canEnter()`, guarda los puntos e impulsores en un arreglo `Array` y dibuja el mapa usando `Screen.drawRectangle()`.
 
@@ -72,7 +73,7 @@ El personaje no esta escrito como codigo suelto dentro de `Main`; esta encapsula
 
 ### Input y movimiento
 
-El juego usa `Keyboard.keyPressed()` dentro del ciclo principal. Las flechas mueven al futbolista y las teclas `1`, `2` y `3` cambian la velocidad base. Cuando el jugador recoge el impulsor, `Game` reduce temporalmente la espera entre movimientos para que el personaje avance mas rapido. El movimiento no redibuja todo el tablero en cada paso, solo actualiza las celdas necesarias.
+El juego usa `Keyboard.keyPressed()` dentro del ciclo principal. Las flechas mueven al futbolista, las teclas `1`, `2` y `3` cambian la velocidad base y la tecla `R` reinicia la partida. Cuando el jugador recoge el impulsor, `Game` reduce temporalmente la espera entre movimientos para que el personaje avance mas rapido. El movimiento no redibuja todo el tablero en cada paso, solo actualiza las celdas necesarias.
 
 ### Arquitectura en Jack
 

@@ -37,12 +37,41 @@ class Game {
             let running = false;
          }
 
+         do updateRestart(key);
          do updateSpeed(key);
          do tryMovePlayer(key);
          do updateBoostTimer();
 
          do Sys.wait(45);
       }
+
+      return;
+   }
+
+   method void updateRestart(int key) {
+      if (key = 82) {
+         do restartGame();
+      }
+      if (key = 114) {
+         do restartGame();
+      }
+      return;
+   }
+
+   method void restartGame() {
+      let speedLevel = 2;
+      let normalSpeedDelay = 1;
+      let speedDelay = normalSpeedDelay;
+      let moveWait = 0;
+      let score = 0;
+      let boostTimer = 0;
+
+      do board.resetItems();
+      do player.resetPosition(15, 15);
+      do Screen.clearScreen();
+      do board.drawAll();
+      do player.draw();
+      do drawHud();
 
       return;
    }

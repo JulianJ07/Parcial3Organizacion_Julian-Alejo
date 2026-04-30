@@ -57,6 +57,10 @@ pop this 2
 label IF_FALSE0
 push pointer 0
 push local 0
+call Game.updateRestart 2
+pop temp 0
+push pointer 0
+push local 0
 call Game.updateSpeed 2
 pop temp 0
 push pointer 0
@@ -71,6 +75,67 @@ call Sys.wait 1
 pop temp 0
 goto WHILE_EXP0
 label WHILE_END0
+push constant 0
+return
+function Game.updateRestart 0
+push argument 0
+pop pointer 0
+push argument 1
+push constant 82
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+call Game.restartGame 1
+pop temp 0
+label IF_FALSE0
+push argument 1
+push constant 114
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+call Game.restartGame 1
+pop temp 0
+label IF_FALSE1
+push constant 0
+return
+function Game.restartGame 0
+push argument 0
+pop pointer 0
+push constant 2
+pop this 3
+push constant 1
+pop this 5
+push this 5
+pop this 4
+push constant 0
+pop this 6
+push constant 0
+pop this 7
+push constant 0
+pop this 8
+push this 0
+call Board.resetItems 1
+pop temp 0
+push this 1
+push constant 15
+push constant 15
+call Player.resetPosition 3
+pop temp 0
+call Screen.clearScreen 0
+pop temp 0
+push this 0
+call Board.drawAll 1
+pop temp 0
+push this 1
+call Player.draw 1
+pop temp 0
+push pointer 0
+call Game.drawHud 1
+pop temp 0
 push constant 0
 return
 function Game.updateSpeed 0

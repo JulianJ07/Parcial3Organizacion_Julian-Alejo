@@ -22,6 +22,12 @@ class Player {
       return board.canEnter(row + deltaRow, col + deltaCol);
    }
 
+   method void resetPosition(int startRow, int startCol) {
+      let row = startRow;
+      let col = startCol;
+      return;
+   }
+
    method boolean move(int deltaRow, int deltaCol) {
       var int nextRow;
       var int nextCol;
