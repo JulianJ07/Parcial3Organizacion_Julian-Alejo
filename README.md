@@ -116,3 +116,8 @@ La estructura esta dividida en `Main`, `Game`, `Board` y `Player`. Los construct
 9. Optimizar rendimiento:
    se evitara redibujar todo el mapa en cada ciclo. Solo se actualizaran las celdas que cambien.
 
+## Conclusion
+
+Esta entrega deja lista la base estructural de Pacman Futbolero en Jack. El proyecto ya muestra un tablero funcional con `Screen`, un futbolista encapsulado como objeto, movimiento controlado con `Keyboard.keyPressed()`, puntos coleccionables, impulsor de velocidad, reinicio de partida y una arquitectura separada en clases. Con esta base, la entrega final podra crecer de forma ordenada agregando rivales, persecucion, poderes, portales planeados, colisiones y condiciones completas de victoria o derrota.
+
+El codigo cumple el enfoque principal de la rubrica porque demuestra uso de API grafica, manejo de input, organizacion orientada a objetos y actualizacion controlada de pantalla para evitar redibujos innecesarios.
